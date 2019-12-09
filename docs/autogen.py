@@ -48,12 +48,6 @@ PAGES = {
         ak.AutoModel.predict,
         ak.AutoModel.evaluate,
     ],
-    'graph_auto_model.md': [
-        ak.GraphAutoModel,
-        ak.GraphAutoModel.fit,
-        ak.GraphAutoModel.predict,
-        ak.GraphAutoModel.evaluate,
-    ],
     'node.md': [
         ak.ImageInput,
         ak.Input,
