@@ -65,11 +65,16 @@ class AutoModel(object):
         self.tuner = tuner_module.get_tuner_class(tuner)
         self.overwrite = overwrite
         self._split_dataset = False
-        if all([isinstance(output_node, base.Head)
-                for output_node in self.outputs]):
+
+        if all([isinstance(output, base.Node) for output in self.outputs]):
+            self.heads = [output_node.in_blocks[0] for output_node in self.outputs]
+        elif all([isinstance(output, base.Head) for output in self.outputs]):
             self.heads = self.outputs
         else:
-            self.heads = [output_node.in_blocks[0] for output_node in self.outputs]
+            raise TypeError('Expect the outputs should either all be Node instances '
+                            'or all be Head instances, but got {types}'.format(
+                                types=set([type(output) for output in self.outputs]))
+                            )
 
     def _meta_build(self, dataset):
         if all([isinstance(output, base.Node) for output in self.outputs]):

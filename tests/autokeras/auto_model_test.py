@@ -106,3 +106,13 @@ def test_overwrite(tuner_fn, tmp_dir):
                               overwrite=False)
     auto_model.fit(x_train, y_train, epochs=2, validation_data=(x_train, y_train))
     assert not tuner_class.call_args_list[0][1]['overwrite']
+
+
+def test_outputs_exception(tmp_dir):
+    with pytest.raises(TypeError) as info:
+        ak.AutoModel(ak.ImageInput(),
+                     [ak.RegressionHead(), ak.Input()],
+                     directory=tmp_dir,
+                     max_trials=2,
+                     overwrite=False)
+        assert 'Expect the outputs should either all be Node' in str(info.value)
